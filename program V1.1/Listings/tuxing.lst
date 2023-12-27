@@ -1,0 +1,63 @@
+C51 COMPILER V9.54   TUXING                                                                12/24/2023 18:13:30 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE TUXING
+OBJECT MODULE PLACED IN .\Objects\tuxing.obj
+COMPILER INVOKED BY: C:\Program Files (x86)\Keil_v5\C51\BIN\C51.EXE tuxing.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECT
+                    -EXTEND PRINT(.\Listings\tuxing.lst) TABS(2) OBJECT(.\Objects\tuxing.obj)
+
+line level    source
+
+   1          #include <draw.h>
+   2          #include <REGX51.H>
+   3          
+   4          
+   5          void Line_x(double l,unsigned char pre,unsigned char speed)
+   6          {
+   7   1        draw_zhixian(0,0,l,0,pre,speed);
+   8   1      }
+   9          void Line_y(double l,unsigned char pre,unsigned char speed)
+  10          {
+  11   1        draw_zhixian(0,0,0,l,pre,speed);
+  12   1      }
+  13          
+  14          void zhengfangxing(double bianchang,unsigned char pre,unsigned char speed)
+  15          {
+  16   1        draw_zhixian(0,0,-bianchang,0,pre,speed);
+  17   1        draw_zhixian(-bianchang,0,-bianchang,-bianchang,pre,speed);
+  18   1        draw_zhixian(-bianchang,-bianchang,0,-bianchang,pre,speed);
+  19   1        draw_zhixian(0,-bianchang,0,0,pre,speed);
+  20   1      }
+  21          
+  22          
+  23          void pingguo(void)
+  24          {
+  25   1        draw_shun_yuanhu(0,0.5,0.865,0,120,10,6); 
+  26   1        draw_shun_yuanhu(1.73,0.5,0,-0.5,90,10,6);
+  27   1        draw_shun_yuanhu(1,-2.23,0.5,-1.365,60,10,6);
+  28   1        draw_shun_yuanhu(0,-2.23,-0.5,-1.365,60,10,6);
+  29   1        draw_shun_yuanhu(-1,-2.23,0,-0.5,90,10,6);
+  30   1        draw_shun_yuanhu(-1.73,0.5,-0.865,0,120,10,6);
+  31   1        draw_zhixian(0,0.5,-0.866,2,50,7);
+  32   1        draw_zhixian(-0.866,2,-1.73,2,50,7);
+  33   1        draw_zhixian(-1.73,2,0,0.5,50,7);
+  34   1        draw_zhixian(0,0.5,0.433,1.25,50,7);
+  35   1        draw_zhixian(0.433,1.25,0.865,1.25,50,7);
+  36   1        draw_zhixian(0.865,1.25,0,0.5,50,7);
+  37   1        draw_shun_yuanhu(0,0.5,1.73,0.5,90,10,6);
+  38   1            
+  39   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1379    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----      18
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

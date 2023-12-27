@@ -1,0 +1,319 @@
+C51 COMPILER V9.54   MAIN__2_                                                              12/24/2023 19:06:05 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN__2_
+OBJECT MODULE PLACED IN .\Objects\main (2).obj
+COMPILER INVOKED BY: C:\Program Files (x86)\Keil_v5\C51\BIN\C51.EXE main (2).c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJE
+                    -CTEXTEND PRINT(.\Listings\main (2).lst) TABS(2) OBJECT(.\Objects\main (2).obj)
+
+line level    source
+
+   1          #include <REGX51.H>
+   2          #include <draw.h>
+   3          #include <tuxing.h>
+   4          #include <LCD1602.h>
+   5          #include "MatrixKey.h"
+   6          #include "Delay.h"
+   7          unsigned char mode_xuanze,mode_f;
+   8          
+   9          
+  10          
+  11          void show_tuxing(unsigned char i)
+  12          {
+  13   1        
+  14   1        switch(i)
+  15   1        {
+  16   2          case 1:  LCD_ShowString(2,1,"Line+x ");break;
+  17   2          case 2:  LCD_ShowString(2,1,"Line+y ");break;
+  18   2          case 3:  LCD_ShowString(2,1,"SQUARE ");break;
+  19   2          case 4:  LCD_ShowString(2,1,"APPLE     "); break;
+  20   2        }
+  21   1      }
+  22          
+  23          
+  24          
+  25          //void bezr()
+  26          //{
+  27          //  unsigned int i;
+  28          //  for(i=0;i<500;i++)
+  29          //  {
+  30          //    P1_5=~P1_5;
+  31          //    delay(10);
+  32          //  }
+  33          //}
+  34          
+  35          
+  36          void main(void)
+  37          {
+  38   1        unsigned char n,draw,finshed=0,count=0,start=0,i=0,bian=0,ok,pre=20,speed=5,mode,m_s=1;
+  39   1        
+  40   1        
+  41   1        LCD_Init();
+  42   1        Int1Init();
+  43   1        Int0Init();
+  44   1      
+  45   1        LCD_ShowString(1,1,"    Welcome!    ");
+  46   1        
+  47   1        while(1)
+  48   1        {
+  49   2          if(mode_xuanze==0)//界面一：欢迎界面
+  50   2          {
+  51   3            LCD_ShowString(1,1,"    Welcome!    ");
+  52   3            LCD_ShowString(2,1,"                ");
+  53   3          }
+  54   2          if(mode_xuanze==1)//界面二：设置模式
+C51 COMPILER V9.54   MAIN__2_                                                              12/24/2023 19:06:05 PAGE 2   
+
+  55   2          {
+  56   3            mode_f=0;
+  57   3            LCD_ShowString(1,1,"SET_MODE:       ");
+  58   3            
+  59   3            mode=keypros();
+  60   3            if(mode==1)
+  61   3            {
+  62   4              //pingguo();
+  63   4              LCD_ShowString(2,1,"Drawing      OK?");
+  64   4              n=1;
+  65   4            }
+  66   3            else if(mode==2)
+  67   3            {
+  68   4              LCD_ShowString(2,1,"Manual       OK?");
+  69   4              n=2;
+  70   4            }
+  71   3            ok=getnumber();
+  72   3            if(ok==5)
+  73   3            {
+  74   4              mode_f=1;
+  75   4              mode_xuanze=3;
+  76   4            }
+  77   3          }
+  78   2          else if(mode_xuanze==2)//界面三：设置参数
+  79   2          {
+  80   3            mode_f=0;
+  81   3            LCD_ShowString(1,1,"SET_PARA:       ");
+  82   3            
+  83   3            mode=keypros();
+  84   3            if(mode==1)
+  85   3            {
+  86   4              LCD_ShowString(2,1,"Speed:          ");
+  87   4              n=1;
+  88   4            }
+  89   3            else if(mode==2)
+  90   3            {
+  91   4              LCD_ShowString(2,1,"Presision:      ");
+  92   4              n=2;
+  93   4            }
+  94   3            ok=getnumber();
+  95   3            if(ok==5)
+  96   3            {
+  97   4              mode_xuanze=3;
+  98   4              mode_f=2;
+  99   4            }
+ 100   3          }
+ 101   2          else if(mode_f==1)//模式下级界面
+ 102   2          {
+ 103   3      
+ 104   3            if(n==1)//绘制图形选择
+ 105   3            {
+ 106   4              draw=getnumber();
+ 107   4              if(i==0)
+ 108   4              {
+ 109   5                LCD_ShowString(1,1,"Draw_mode       ");
+ 110   5              }
+ 111   4              
+ 112   4              if(draw==2)//图形上翻：S2
+ 113   4              {
+ 114   5                count++;
+ 115   5              }
+ 116   4              else if(draw==8)//图形下翻：S10
+C51 COMPILER V9.54   MAIN__2_                                                              12/24/2023 19:06:05 PAGE 3   
+
+ 117   4              {
+ 118   5                count--;
+ 119   5              }
+ 120   4              else if(draw==5)//确认绘制：S6
+ 121   4              {
+ 122   5                start=1;
+ 123   5              }
+ 124   4              else if(draw==4)//绘制长度减小：S5，步长-1
+ 125   4              {
+ 126   5                bian--;
+ 127   5                if(bian<0)bian=0;
+ 128   5                LCD_ShowNum(2,8,bian,1);
+ 129   5              }
+ 130   4              else if(draw==6)//绘制长度增加：S7，步长1
+ 131   4              {
+ 132   5                bian++;
+ 133   5                if(bian>5)bian=5;
+ 134   5                LCD_ShowNum(2,8,bian,1);
+ 135   5              }
+ 136   4              else if(draw==3)//退出：S3
+ 137   4              {
+ 138   5                stop=0;
+ 139   5                i-=1;
+ 140   5              }
+ 141   4              if(count>9)count=1;
+ 142   4              if(count<1)count=1;
+ 143   4              if(i==0)
+ 144   4              {
+ 145   5                show_tuxing(count);
+ 146   5              }
+ 147   4              if(start==1)//开始判断
+ 148   4              {
+ 149   5                
+ 150   5                switch(count)
+ 151   5                {
+ 152   6                  case 1: Line_x(bian,pre,speed);start=0;finshed=1;break;
+ 153   6                  case 2: Line_y(bian,pre,speed);start=0;finshed=1;break;
+ 154   6                  case 3: zhengfangxing(3,pre,speed);start=0;finshed=1;break;
+ 155   6                  case 4: pingguo();start=0;finshed=1;break;
+ 156   6                }
+ 157   5                if(finshed==1)//绘制完成，显示
+ 158   5                {
+ 159   6                  LCD_ShowString(1,1,"    Finshed!    ");
+ 160   6                  LCD_ShowString(2,1,"                ");
+ 161   6                  i+=1;
+ 162   6                  finshed=0;
+ 163   6                  //bezr();
+ 164   6                }
+ 165   5              }
+ 166   4      //        if(stop==1)
+ 167   4      //        {
+ 168   4      ////          ok=getnumber();
+ 169   4      ////          if(ok==5)
+ 170   4      ////          { 
+ 171   4      ////            mode_xuanze=1;
+ 172   4      ////            stop=0;
+ 173   4      ////            mode_f=0;
+ 174   4      ////          }
+ 175   4      //          LCD_ShowString(2,1,"     STOP!!     ");
+ 176   4      //          //LCD_ShowString(2,1,"                ");
+ 177   4      //        } 
+ 178   4            }
+C51 COMPILER V9.54   MAIN__2_                                                              12/24/2023 19:06:05 PAGE 4   
+
+ 179   3            else if(n==2)//手动模式:x轴正负方向移动，y轴正负方向移动
+ 180   3            {
+ 181   4              LCD_ShowString(1,1,"Manual_mode");
+ 182   4              LCD_ShowString(1,15,"^");
+ 183   4              LCD_ShowString(2,15,"V");
+ 184   4              LCD_ShowString(2,14,"<");
+ 185   4              LCD_ShowString(2,16,">");
+ 186   4              LCD_ShowNum(2,11,m_s,1);
+ 187   4              LCD_ShowString(2,1,"          ");
+ 188   4              gongneng(m_s);
+ 189   4              draw=getnumber();
+ 190   4      //        if(draw==12)
+ 191   4      //        {
+ 192   4      //          m_s+=1;
+ 193   4      //          if(m_s>9)speed=0;
+ 194   4      //          //LCD_ShowNum(2,11,m_s,3);
+ 195   4      //        }
+ 196   4              if(draw==11)
+ 197   4              {
+ 198   5                m_s+=1;
+ 199   5                if(m_s>9)m_s=0;
+ 200   5                //LCD_ShowNum(2,11,m_s,3);
+ 201   5              }
+ 202   4              if(draw==3)
+ 203   4              {
+ 204   5                mode_f=0;
+ 205   5                mode_xuanze=0;
+ 206   5              }
+ 207   4            }
+ 208   3          }
+ 209   2          else if(mode_f==2)//参数下级界面
+ 210   2          {
+ 211   3            if(n==2)//精度设置
+ 212   3            {
+ 213   4              LCD_ShowNum(2,13,pre,3);
+ 214   4              draw=getnumber();
+ 215   4              if(draw==2)//精度增加
+ 216   4              {
+ 217   5                pre+=5;
+ 218   5                if(pre>100)pre=100;
+ 219   5                LCD_ShowNum(2,13,pre,3);
+ 220   5              }
+ 221   4              else if(draw==4)//精度减少
+ 222   4              {
+ 223   5                pre-=5;
+ 224   5                if(pre<0)pre=0;
+ 225   5                LCD_ShowNum(2,13,pre,3);
+ 226   5              }
+ 227   4              else if(draw==5)//确认
+ 228   4              {
+ 229   5                start=1;
+ 230   5              }
+ 231   4            }
+ 232   3            else if(n==1)//速度设置
+ 233   3            {
+ 234   4              LCD_ShowNum(2,13,speed,3);
+ 235   4              draw=getnumber();
+ 236   4              if(draw==2)//速度增加
+ 237   4              {
+ 238   5                speed+=1;
+ 239   5                if(speed>9)speed=0;
+ 240   5                LCD_ShowNum(2,13,speed,3);
+C51 COMPILER V9.54   MAIN__2_                                                              12/24/2023 19:06:05 PAGE 5   
+
+ 241   5              }
+ 242   4              else if(draw==8)//速度减少
+ 243   4              {
+ 244   5                speed-=1;
+ 245   5                if(speed<0)speed=0;
+ 246   5                LCD_ShowNum(2,13,speed,3);
+ 247   5              }
+ 248   4              else if(draw==5)//确认
+ 249   4              {
+ 250   5                start=1;
+ 251   5              }
+ 252   4            }
+ 253   3            if(start==1)
+ 254   3            {
+ 255   4              LCD_ShowString(2,1,"                ");
+ 256   4              start=0;
+ 257   4              mode_f=0;
+ 258   4              mode_xuanze=2;
+ 259   4            }
+ 260   3          }
+ 261   2          
+ 262   2        }
+ 263   1      }
+ 264          
+ 265          
+ 266          
+ 267          void Int1() interrupt 2   //外部中断1的中断函数
+ 268          {
+ 269   1        Delayxm(10);   //延时消抖
+ 270   1        if(k4==0)
+ 271   1        {
+ 272   2          stop=1;
+ 273   2          mode_xuanze=3;
+ 274   2        }
+ 275   1      }
+ 276          
+ 277          void Int0() interrupt 0   //外部中断0的中断函数
+ 278          {
+ 279   1        Delayxm(10);   //延时消抖
+ 280   1        if(k3==0)
+ 281   1        {
+ 282   2          LCD_ShowString(2,1,"                ");
+ 283   2          mode_f=0;
+ 284   2          mode_xuanze+=1;
+ 285   2          if(mode_xuanze>2)mode_xuanze=0;
+ 286   2        }
+ 287   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1345    ----
+   CONSTANT SIZE    =    236    ----
+   XDATA SIZE       =      2      12
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
